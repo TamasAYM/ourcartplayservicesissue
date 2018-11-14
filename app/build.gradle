@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+android {
+	compileSdkVersion 28
+	defaultConfig {
+		applicationId "com.example.ourcartplayservicesissue"
+		minSdkVersion 21
+		targetSdkVersion 28
+		versionCode 1
+		versionName "1.0"
+		multiDexEnabled true
+	}
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+}
+
+dependencies {
+	implementation "androidx.appcompat:appcompat:1.0.2"
+	// the issue is here:
+	//	In project 'app' a resolved Google Play services library dependency depends on another at an exact version (e.g. "[15.0.
+	//			1]", but isn't being resolved to that version. Behavior exhibited by the library will be unknown.
+	//
+	//			Dependency failing: com.google.android.gms:play-services-flags:15.0.1 -> com.google.android.gms:play-services-basement@[
+	//			15.0.1], but play-services-basement version was 16.0.1.
+	//
+	//			The following dependencies are project dependencies that are direct or have transitive dependencies that lead to the art
+	//			ifact with the issue.
+	//			-- Project 'app' depends onto com.google.firebase:firebase-core@16.0.5
+	//			-- Project 'app' depends onto com.google.firebase:firebase-config@16.1.0
+	//			-- Project 'app' depends onto com.ourcart:sdk@1.2
+	//
+	//
+	// as soon as we remove ourcard as a dependency the build succeeds
+	implementation 'com.ourcart:sdk:1.2'
+	implementation "com.google.firebase:firebase-core:16.0.5"
+	implementation "com.google.firebase:firebase-config:16.1.0"
+}
+
+apply plugin: 'com.google.gms.google-services'
