@@ -30,3 +30,6 @@ The following dependencies are project dependencies that are direct or have tran
 as soon as we remove ourcart as a dependency the build succeeds
 
 `// implementation 'com.ourcart:sdk:1.2'`
+
+## known workaround
+don't use latest firebase
